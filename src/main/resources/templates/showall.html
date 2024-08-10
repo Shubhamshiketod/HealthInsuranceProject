@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Users List</h1>
+
+        <!-- Dropdown for selecting roles -->
+        <div class="form-group">
+            <label for="roleSelect">Select Role:</label>
+            <select id="roleSelect" class="form-control">
+                <option value="caseworker">Caseworker</option>
+                <option value="admin">Admin</option>               
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+
+        <!-- Loading indicator -->
+        <div id="loadingIndicator" style="display:none;">Loading...</div>
+
+        <!-- Table for displaying users -->
+        <table class="table table-bordered mt-4" id="usersTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Users will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            function loadUsers(role) {
+                $('#loadingIndicator').show();  // Show loading indicator
+                $.ajax({
+                    url: '/User/getAll',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { role: role },
+                    success: function(users) {
+                        var rows = '';
+                        $.each(users, function(index, user) {
+                            rows += '<tr>' +
+                                '<td>' + user.id + '</td>' +
+                                '<td>' + user.fname + '</td>' +
+                                '<td>' + user.lname + '</td>' +
+                                '<td>' + user.email + '</td>' +
+                                '<td>' + user.gender + '</td>' +
+                                '<td>' + user.role + '</td>' +
+                                '</tr>';
+                        });
+                        $('#usersTable tbody').html(rows);  // Update table rows
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching users:", status, error);
+                    },
+                    complete: function() {
+                        $('#loadingIndicator').hide();  // Hide loading indicator
+                    }
+                });
+            }
+
+            $('#roleSelect').change(function() {
+                var selectedRole = $(this).val();
+                loadUsers(selectedRole);
+            });
+
+            // Load default role on page load
+            loadUsers($('#roleSelect').val());
+        });
+    </script>
+</body>
+</html>

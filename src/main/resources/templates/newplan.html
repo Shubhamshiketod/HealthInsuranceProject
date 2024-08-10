@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Plan Form</h1>
+
+    <form th:action="@{/plan/save}" th:object="${plan}" method="post">
+        <div class="form-group">
+            <label for="planName">Plan Name:</label>
+            <input type="text" class="form-control" id="planName" th:field="*{planName}" placeholder="Enter plan name" />
+        </div>
+        
+        <div class="form-group">
+            <label for="planStartDate">Plan Start Date:</label>
+            <input type="date" class="form-control" id="planStartDate" th:field="*{planStartDate}" />
+        </div>
+        
+        <div class="form-group">
+            <label for="planEndDate">Plan End Date:</label>
+            <input type="date" class="form-control" id="planEndDate" th:field="*{planEndDate}" />
+        </div>
+        
+        <div class="form-group">
+            <label for="planCategory">Plan Category:</label>
+            <input type="text" class="form-control" id="planCategory" th:field="*{planCategory}" placeholder="Enter plan category" />
+        </div>
+     
+        
+       
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
